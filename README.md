@@ -4,6 +4,19 @@ An AI-powered **Heart Attack Risk Assessment** web application built with Django
 
 ---
 
+## 📸 Screenshots
+
+### Patient Input Form
+![Patient Input Form](docs/screenshots/form_page.png)
+
+### Result Page — Low Risk Profile
+![Low Risk Result](docs/screenshots/result_low_risk.png)
+
+### Result Page — Elevated Risk Detected
+![High Risk Result](docs/screenshots/result_high_risk.png)
+
+---
+
 ## ✨ Features
 
 - **4-Model Ensemble** — Logistic Regression, Random Forest, SVM, and a Multi-Layer Perceptron vote together for a robust final prediction.
