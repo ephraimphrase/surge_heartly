@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container pb-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-7">
+
+            <!-- Main Hero Result Card -->
+            <div class="glass-card text-center mb-5 position-relative overflow-hidden">
+                <!-- Decorative background flair -->
+                {% if majority_prediction == 1 %}
+                <div
+                    style="position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #dc3545, #ff7675);">
+                </div>
+                <div class="mb-4 d-inline-flex justify-content-center align-items-center rounded-circle"
+                    style="width: 80px; height: 80px; background-color: rgba(220, 53, 69, 0.1); color: #dc3545;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                        class="bi bi-heart-pulse-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M1.475 9C2.702 10.84 4.779 12.871 8 15c3.221-2.129 5.298-4.16 6.525-6H12a.5.5 0 0 1-.464-.314l-1.457-3.642-1.598 5.593a.5.5 0 0 1-.945.049L5.889 6.568l-1.473 2.21A.5.5 0 0 1 4 9H1.475Z" />
+                        <path
+                            d="M.88 8C-2.427 1.68 4.41-2 7.823 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C11.59-2 18.426 1.68 15.12 8h-2.783l-1.874-4.686a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8H.88Z" />
+                    </svg>
+                </div>
+                <h1 class="display-5 fw-bold text-danger mb-3">Elevated Risk Detected</h1>
+                <p class="lead text-muted px-md-5">
+                    Based on the patient's clinical and demographic data, our ensemble AI models indicate a <strong>high
+                        probability of future cardiac events.</strong> Immediate consultation with a cardiologist is
+                    recommended.
+                </p>
+                {% else %}
+                <div
+                    style="position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #198754, #55efc4);">
+                </div>
+                <div class="mb-4 d-inline-flex justify-content-center align-items-center rounded-circle"
+                    style="width: 80px; height: 80px; background-color: rgba(25, 135, 84, 0.1); color: #198754;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                        class="bi bi-shield-check" viewBox="0 0 16 16">
+                        <path
+                            d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.456.545 7.136 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z" />
+                        <path
+                            d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+                    </svg>
+                </div>
+                <h1 class="display-5 fw-bold text-success mb-3">Low Risk Profile</h1>
+                <p class="lead text-muted px-md-5">
+                    Based on the patient's clinical and demographic data, our ensemble AI models indicate a <strong>low
+                        probability of future cardiac events.</strong> Regular checkups are still encouraged.
+                </p>
+                {% endif %}
+            </div>
+
+
+            <!-- Detailed Breakdown -->
+            <div class="row g-4 mb-5">
+
+                <!-- Neural Net Probability -->
+                <div class="col-md-12">
+                    <div class="glass-card p-4">
+                        <h5 class="mb-3" style="color: var(--text-main); font-weight: 600;">Deep Learning Confidence
+                        </h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Probability of Heart Attack</span>
+                            <span class="fw-bold fs-5">{{ nn_probability }}%</span>
+                        </div>
+
+                        <div class="progress" style="height: 12px; border-radius: 10px; background-color: #edf2f7;">
+                            {% if majority_prediction == 1 %}
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                role="progressbar" style="width: {{ nn_probability }}%;"
+                                aria-valuenow="{{ nn_probability }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            {% else %}
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                role="progressbar" style="width: {{ nn_probability }}%;"
+                                aria-valuenow="{{ nn_probability }}" aria-valuemin="0" aria-valuemax="100"></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ensemble Model Votes -->
+                <div class="col-md-12">
+                    <div class="glass-card p-4">
+                        <h5 class="mb-4" style="color: var(--text-main); font-weight: 600;">Ensemble Model Consensus
+                        </h5>
+
+                        <div class="d-flex flex-column gap-3">
+                            <!-- LR -->
+                            <div class="d-flex justify-content-between align-items-center p-3 rounded-3"
+                                style="background-color: #f8f9fa;">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white"
+                                        style="width: 32px; height: 32px; background: var(--primary-gradient); font-size: 0.8rem; font-weight: bold;">
+                                        LR</div>
+                                    <span class="fw-medium">Logistic Regression</span>
+                                </div>
+                                <div>
+                                    {% if lr_pred == 1 %}
+                                    <span
+                                        class="badge bg-danger bg-opacity-10 text-danger border border-danger px-3 py-2 rounded-pill">Positive
+                                        Risk</span>
+                                    {% else %}
+                                    <span
+                                        class="badge bg-success bg-opacity-10 text-success border border-success px-3 py-2 rounded-pill">Negative</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- RF -->
+                            <div class="d-flex justify-content-between align-items-center p-3 rounded-3"
+                                style="background-color: #f8f9fa;">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white"
+                                        style="width: 32px; height: 32px; background: var(--primary-gradient); font-size: 0.8rem; font-weight: bold;">
+                                        RF</div>
+                                    <span class="fw-medium">Random Forest</span>
+                                </div>
+                                <div>
+                                    {% if rf_pred == 1 %}
+                                    <span
+                                        class="badge bg-danger bg-opacity-10 text-danger border border-danger px-3 py-2 rounded-pill">Positive
+                                        Risk</span>
+                                    {% else %}
+                                    <span
+                                        class="badge bg-success bg-opacity-10 text-success border border-success px-3 py-2 rounded-pill">Negative</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- SVM -->
+                            <div class="d-flex justify-content-between align-items-center p-3 rounded-3"
+                                style="background-color: #f8f9fa;">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white"
+                                        style="width: 32px; height: 32px; background: var(--primary-gradient); font-size: 0.8rem; font-weight: bold;">
+                                        SVM</div>
+                                    <span class="fw-medium">Support Vector Machine</span>
+                                </div>
+                                <div>
+                                    {% if svm_pred == 1 %}
+                                    <span
+                                        class="badge bg-danger bg-opacity-10 text-danger border border-danger px-3 py-2 rounded-pill">Positive
+                                        Risk</span>
+                                    {% else %}
+                                    <span
+                                        class="badge bg-success bg-opacity-10 text-success border border-success px-3 py-2 rounded-pill">Negative</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- NN -->
+                            <div class="d-flex justify-content-between align-items-center p-3 rounded-3"
+                                style="background-color: #f8f9fa;">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white"
+                                        style="width: 32px; height: 32px; background: var(--primary-gradient); font-size: 0.8rem; font-weight: bold;">
+                                        NN</div>
+                                    <span class="fw-medium">Artificial Neural Network</span>
+                                </div>
+                                <div>
+                                    {% if nn_pred == 1 %}
+                                    <span
+                                        class="badge bg-danger bg-opacity-10 text-danger border border-danger px-3 py-2 rounded-pill">Positive
+                                        Risk</span>
+                                    {% else %}
+                                    <span
+                                        class="badge bg-success bg-opacity-10 text-success border border-success px-3 py-2 rounded-pill">Negative</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="/" class="btn btn-outline-custom px-5 py-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                    </svg>
+                    Evaluate Another Patient
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock content %}

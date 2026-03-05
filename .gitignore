@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.Python
+
+# Virtual Environment
+venv/
+env/
+.env/
+.venv/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Model & Scaler artifacts — regenerated at runtime, do not commit
+*.h5
+*.pkl
+heart_attack_neural_network_model.h5
+heart_attack_mlp_model.pkl
+heart_attack_scaler.pkl
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+.eggs/
+
+# IDE / editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Testing & coverage
+.coverage
+.tox/
+htmlcov/
+.pytest_cache/

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container pb-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+
+            <div class="text-center mb-5 mt-2">
+                <h1 class="display-5 fw-bold text-primary-gradient mb-3"
+                    style="background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Heart Attack Risk Assessment</h1>
+                <p class="text-muted lead">Enter the patient's medical data below to generate an AI-powered prediction
+                    using four ensemble models.</p>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-danger d-flex align-items-center mb-4 rounded-3 shadow-sm" role="alert"
+                style="border-left: 5px solid #dc3545;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    class="bi bi-exclamation-triangle-fill flex-shrink-0 me-3" viewBox="0 0 16 16">
+                    <path
+                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </svg>
+                <div>
+                    <strong>Correction needed.</strong> {{ error }}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="glass-card">
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <h4 class="mb-4 pb-2 border-bottom" style="color: var(--primary-blue); font-weight: 600;">Patient
+                        Demographics</h4>
+
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-6">
+                            <label for="age" class="form-label">Age (Years)</label>
+                            <input type="number" class="form-control form-control-lg" id="age" name="age" min="1"
+                                max="120" placeholder="e.g. 55" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="sex" class="form-label">Biological Sex</label>
+                            <select class="form-select form-select-lg" id="sex" name="sex" required>
+                                <option value="" selected disabled>Select...</option>
+                                <option value="0">Female</option>
+                                <option value="1">Male</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <h4 class="mb-4 pb-2 border-bottom" style="color: var(--primary-blue); font-weight: 600;">Clinical
+                        Metrics</h4>
+
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-6">
+                            <label for="cp" class="form-label">Chest Pain Type</label>
+                            <select class="form-select" id="cp" name="cp" required>
+                                <option value="" selected disabled>Select...</option>
+                                <option value="0">Typical Angina (0)</option>
+                                <option value="1">Atypical Angina (1)</option>
+                                <option value="2">Non-Anginal Pain (2)</option>
+                                <option value="3">Asymptomatic (3)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="trestbps" class="form-label">Resting Blood Pressure (mm Hg)</label>
+                            <input type="number" class="form-control" id="trestbps" name="trestbps" min="50" max="250"
+                                placeholder="e.g. 130" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="chol" class="form-label">Serum Cholesterol (mg/dl)</label>
+                            <input type="number" class="form-control" id="chol" name="chol" min="100" max="600"
+                                placeholder="e.g. 240" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="fbs" class="form-label">Fasting Blood Sugar > 120 mg/dl?</label>
+                            <select class="form-select" id="fbs" name="fbs" required>
+                                <option value="" selected disabled>Select...</option>
+                                <option value="0">No (False)</option>
+                                <option value="1">Yes (True)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="restecg" class="form-label">Resting ECG Results</label>
+                            <select class="form-select" id="restecg" name="restecg" required>
+                                <option value="" selected disabled>Select...</option>
+                                <option value="0">Normal</option>
+                                <option value="1">ST-T Wave Abnormality</option>
+                                <option value="2">Left Ventricular Hypertrophy</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="thalach" class="form-label">Maximum Heart Rate Achieved</label>
+                            <input type="number" class="form-control" id="thalach" name="thalach" min="60" max="220"
+                                placeholder="e.g. 150" required>
+                        </div>
+                    </div>
+
+
+                    <h4 class="mb-4 pb-2 border-bottom" style="color: var(--primary-blue); font-weight: 600;">Exercise &
+                        Angiography</h4>
+
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-6">
+                            <label for="exang" class="form-label">Exercise Induced Angina?</label>
+                            <select class="form-select" id="exang" name="exang" required>
+                                <option value="" selected disabled>Select...</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="oldpeak" class="form-label">ST Depression (Exercise vs Rest)</label>
+                            <input type="number" class="form-control" id="oldpeak" name="oldpeak" step="0.1" min="0"
+                                max="10" placeholder="e.g. 1.5" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="slope" class="form-label">Slope of Peak Exercise ST Segment</label>
+                            <select class="form-select" id="slope" name="slope" required>
+                                <option value="" selected disabled>Select...</option>
+                                <option value="0">Upsloping</option>
+                                <option value="1">Flat</option>
+                                <option value="2">Downsloping</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="ca" class="form-label">Major Vessels (0-4) by Fluoroscopy</label>
+                            <select class="form-select" id="ca" name="ca" required>
+                                <option value="" selected disabled>Select...</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="thal" class="form-label">Thalassemia Test Result</label>
+                            <select class="form-select" id="thal" name="thal" required>
+                                <option value="" selected disabled>Select...</option>
+                                <option value="0">Normal</option>
+                                <option value="1">Fixed Defect</option>
+                                <option value="2">Reversible Defect</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-5">
+                        <button type="submit"
+                            class="btn btn-gradient btn-lg py-3 fs-5 d-flex align-items-center justify-content-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                                class="bi bi-activity" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M6 2a.5.5 0 0 1 .47.33L10 12.036l1.53-4.208A.5.5 0 0 1 12 7.5h3.5a.5.5 0 0 1 0 1h-3.15l-1.88 5.17a.5.5 0 0 1-.94 0L6 3.964 4.47 8.171A.5.5 0 0 1 4 8.5H.5a.5.5 0 0 1 0-1h3.15l1.88-5.17A.5.5 0 0 1 6 2z" />
+                            </svg>
+                            Generate Prediction Report
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

@@ -1,0 +1,2 @@
+# Normalize line endings: commit with LF, checkout with CRLF on Windows
+* text=auto
