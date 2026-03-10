@@ -132,6 +132,10 @@ Surge_Heartly/
 
 ---
 
-## 📄 License
+## 📄 Licensing
 
-MIT
+No formal license has been assigned to this codebase yet.
+
+**Dataset:** The `heart.csv` file is the Cleveland Heart Disease dataset from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/heart+Disease). It is available for research and educational use only. Credit: Detrano, R., et al. (1989), *International application of a new probability algorithm for the diagnosis of coronary artery disease*, American Journal of Cardiology.
+
+**Dependencies:** scikit‑learn, Django, pandas, and numpy are all BSD‑3‑Clause licensed.
